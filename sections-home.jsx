@@ -174,17 +174,19 @@ function HomeMock({ lang, scale = 0.7, condensed = true, chrome = true }) {
               textWrap: "pretty",
             }}>{t.heroLead}</p>
             <div style={{ display: "flex", gap: 12, marginTop: 36, flexWrap: "wrap" }}>
-              <button style={{
+              <a href="#/join" style={{
                 background: c.blue, color: "white", border: 0, borderRadius: 999,
                 padding: "16px 28px", fontSize: 15, fontWeight: 600, cursor: "pointer",
                 display: "inline-flex", alignItems: "center", gap: 10, fontFamily: "inherit",
+                textDecoration: "none",
               }}>
                 {t.cta.join} <ArrowNext size={16} dir={dir} />
-              </button>
-              <button style={{
+              </a>
+              <a href="#/join" style={{
                 background: "transparent", color: c.ink, border: `1px solid ${c.hair}`, borderRadius: 999,
                 padding: "16px 28px", fontSize: 15, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
-              }}>{t.cta.support}</button>
+                textDecoration: "none",
+              }}>{t.cta.support}</a>
             </div>
             {/* trust line */}
             <div style={{ marginTop: 40, display: "flex", alignItems: "center", gap: 22, fontSize: 12, color: c.ink3 }}>
@@ -209,16 +211,20 @@ function HomeMock({ lang, scale = 0.7, condensed = true, chrome = true }) {
               <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 0.16, color: c.blue, fontWeight: 600 }}>{t.newsKicker}</div>
               <h2 style={{ fontSize: 40, fontFamily: "var(--font-display)", letterSpacing: "-0.025em", fontWeight: 700, margin: "8px 0 0" }}>{t.newsTitle}</h2>
             </div>
-            <a style={{ color: c.blue, textDecoration: "none", fontSize: 14, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <a href="#/news" style={{ color: c.blue, textDecoration: "none", fontSize: 14, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 8 }}>
               {t.cta.all} <ArrowNext size={14} dir={dir} />
             </a>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
             {news.map((n, i) => (
-              <article key={i} style={{
+              <a key={i} href="#/news" style={{
                 background: c.paper, border: `1px solid ${c.hair}`, borderRadius: 14, overflow: "hidden",
                 display: "flex", flexDirection: "column",
-              }}>
+                textDecoration: "none", color: "inherit",
+                transition: "transform 200ms ease, box-shadow 200ms ease",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px -16px rgba(0,42,110,0.25)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}>
                 <Plate label={n.tag} tone={i % 2 ? "soft" : "mist"} ratio="16/10" />
                 <div style={{ padding: 18 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: c.ink3, marginBottom: 10 }}>
@@ -228,7 +234,7 @@ function HomeMock({ lang, scale = 0.7, condensed = true, chrome = true }) {
                   <h3 style={{ fontSize: 16, lineHeight: 1.35, margin: 0, fontWeight: 600, letterSpacing: "-0.01em" }}>{n.title}</h3>
                   <div style={{ fontSize: 12, color: c.ink3, marginTop: 12 }}>{n.source}</div>
                 </div>
-              </article>
+              </a>
             ))}
           </div>
         </div>
@@ -243,17 +249,24 @@ function HomeMock({ lang, scale = 0.7, condensed = true, chrome = true }) {
               <h2 style={{ fontSize: 48, fontFamily: "var(--font-display)", letterSpacing: "-0.025em", fontWeight: 700, margin: "8px 0 0", maxWidth: 600 }}>{t.positionsTitle}</h2>
             </div>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 0, border: `1px solid ${c.hair}`, borderRadius: 16, overflow: "hidden" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 0, border: `1px solid ${c.hair}`, borderRadius: 16, overflow: "hidden" }}>
             {t.positionsList.map((p, i) => {
               const row = Math.floor(i / 3);
               const col = i % 3;
               return (
-                <div key={i} style={{
-                  padding: "32px 28px",
-                  borderRight: col === 2 ? 0 : `1px solid ${c.hair}`,
-                  borderBottom: row === 1 ? 0 : `1px solid ${c.hair}`,
-                  background: c.paper,
-                }}>
+                <a key={i}
+                  href={i === 0 ? "#/position-detail" : "#/positions"}
+                  style={{
+                    padding: "32px 28px",
+                    borderInlineEnd: col === 2 ? 0 : `1px solid ${c.hair}`,
+                    borderBottom: row === 1 ? 0 : `1px solid ${c.hair}`,
+                    background: c.paper,
+                    textDecoration: "none", color: "inherit",
+                    display: "block",
+                    transition: "background 180ms ease",
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = c.blueMist}
+                  onMouseLeave={e => e.currentTarget.style.background = c.paper}>
                   <div style={{ width: 36, height: 36, background: c.blueSoft, borderRadius: 8, marginBottom: 20, display: "grid", placeItems: "center", color: c.blueDeep }}>
                     <PositionIcon i={i} />
                   </div>
@@ -262,7 +275,7 @@ function HomeMock({ lang, scale = 0.7, condensed = true, chrome = true }) {
                   <div style={{ marginTop: 18, fontSize: 13, color: c.blue, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 8 }}>
                     {t.cta.more} <ArrowNext size={14} dir={dir} />
                   </div>
-                </div>
+                </a>
               );
             })}
           </div>
@@ -281,30 +294,29 @@ function HomeMock({ lang, scale = 0.7, condensed = true, chrome = true }) {
                   : lang === "en" ? "Knesset opening speech · May 26, 2026 · 14 min"
                   : "Открывающая речь в Кнессете · 26 мая 2026 · 14 мин"}
               </p>
-              <button style={{
+              <a href="https://www.youtube.com/user/Netanyahu/featured" target="_blank" rel="noopener" style={{
                 marginTop: 28, background: "transparent",
                 color: "white", border: `1px solid rgba(255,255,255,0.3)`,
                 borderRadius: 999, padding: "14px 24px", fontSize: 14, fontWeight: 600, cursor: "pointer",
-                fontFamily: "inherit",
-              }}>{lang === "he" ? "כל הסרטונים" : lang === "en" ? "All videos" : "Все видео"}</button>
+                fontFamily: "inherit", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10,
+              }}>{lang === "he" ? "כל הסרטונים ב-YouTube" : lang === "en" ? "All videos on YouTube" : "Все видео на YouTube"}</a>
             </div>
-            <div style={{
-              aspectRatio: "16/9",
-              background: "linear-gradient(135deg, #1B2E63, #0A2058)",
-              borderRadius: 16, position: "relative", overflow: "hidden",
-              border: `1px solid rgba(255,255,255,0.08)`,
-            }}>
-              {/* fake video bg */}
+            <a href="https://www.youtube.com/user/Netanyahu/featured" target="_blank" rel="noopener"
+               aria-label={lang === "he" ? "צפו ב-YouTube" : lang === "en" ? "Watch on YouTube" : "Смотреть на YouTube"}
+               style={{
+                aspectRatio: "16/9",
+                background: "linear-gradient(135deg, #1B2E63, #0A2058)",
+                borderRadius: 16, position: "relative", overflow: "hidden",
+                border: `1px solid rgba(255,255,255,0.08)`, display: "block", textDecoration: "none",
+                cursor: "pointer",
+              }}>
               <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style={{ position: "absolute", inset: 0 }}>
                 <rect x="0" y="115" width="320" height="65" fill="#06133A" />
                 <ellipse cx="160" cy="85" rx="40" ry="50" fill="#1B2E63" />
                 <path d="M70 180 C 80 130, 120 115, 160 115 C 200 115, 240 130, 250 180 Z" fill="#13245A" />
                 <rect x="280" y="14" width="22" height="14" rx="1" fill="none" stroke="#0038B8" strokeWidth="0.8" />
               </svg>
-              {/* play button */}
-              <div style={{
-                position: "absolute", inset: 0, display: "grid", placeItems: "center",
-              }}>
+              <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center" }}>
                 <div style={{
                   width: 84, height: 84, borderRadius: 999,
                   background: "rgba(255,255,255,0.94)",
@@ -321,7 +333,7 @@ function HomeMock({ lang, scale = 0.7, condensed = true, chrome = true }) {
               }}>
                 <bdi>14:32</bdi>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </section>
@@ -364,15 +376,18 @@ function HomeMock({ lang, scale = 0.7, condensed = true, chrome = true }) {
                   : lang === "en" ? ["Tel Aviv", "Jerusalem", "Haifa", "Beersheba", "Eilat", "Netanya"]
                   : ["Тель-Авив", "Иерусалим", "Хайфа", "Беэр-Шева", "Эйлат", "Нетания"]
                 ][0].map((name, i, arr) => (
-                  <div key={i} style={{
+                  <a key={i} href="#/branches" style={{
                     padding: "14px 18px", fontSize: 14, fontWeight: 500,
                     borderBottom: i >= arr.length - 2 ? 0 : `1px solid ${c.hair}`,
-                    borderRight: i % 2 === 0 ? `1px solid ${c.hair}` : 0,
+                    borderInlineEnd: i % 2 === 0 ? `1px solid ${c.hair}` : 0,
                     display: "flex", justifyContent: "space-between",
-                  }}>
+                    textDecoration: "none", color: "inherit", transition: "background 180ms ease",
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = c.blueMist}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
                     <span>{name}</span>
                     <ArrowNext size={14} dir={dir} />
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
@@ -387,25 +402,8 @@ function HomeMock({ lang, scale = 0.7, condensed = true, chrome = true }) {
       </section>
 
       {/* === NEWSLETTER === */}
-      <section style={{ background: c.blueSoft }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "72px 32px", display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)", gap: 48, alignItems: "center" }}>
-          <div>
-            <h2 style={{ fontSize: 36, fontFamily: "var(--font-display)", letterSpacing: "-0.025em", fontWeight: 700, margin: 0 }}>{t.newsletterTitle}</h2>
-            <p style={{ fontSize: 16, color: c.ink2, margin: "12px 0 0", maxWidth: 460 }}>{t.newsletterLede}</p>
-          </div>
-          <div style={{ display: "flex", gap: 0, background: c.paper, borderRadius: 999, padding: 6, border: `1px solid ${c.hair}` }}>
-            <input placeholder={t.newsletterPh} dir={dir} style={{
-              flex: 1, border: 0, outline: 0, background: "transparent",
-              padding: "14px 22px", fontSize: 15, fontFamily: "inherit",
-              textAlign: dir === "rtl" ? "right" : "left",
-            }} />
-            <button style={{
-              background: c.blue, color: "white", border: 0, borderRadius: 999,
-              padding: "14px 28px", fontSize: 14.5, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
-            }}>{t.cta.subscribe}</button>
-          </div>
-        </div>
-      </section>
+      <NewsletterBlock c={c} t={t} dir={dir} lang={lang} />
+
 
       {/* === FOOTER === */}
       {chrome && (
@@ -602,4 +600,57 @@ function FramedScaledMock({ lang, large }) {
   );
 }
 
-Object.assign(window, { SectionHome, HomeMock, BrowserFrame, FramedScaledMock, PositionIcon });
+// Newsletter form with submit feedback (uses CONTENT for localized labels).
+function NewsletterBlock({ c, t, dir, lang }) {
+  const [email, setEmail] = React.useState("");
+  const [state, setState] = React.useState("idle"); // idle | ok | bad
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (!/^\S+@\S+\.\S+$/.test(email)) { setState("bad"); return; }
+    setState("ok");
+    setEmail("");
+  };
+  const okMsg = lang === "he"
+    ? "תודה! ההרשמה התקבלה."
+    : lang === "en" ? "Thanks — you're subscribed."
+    : "Спасибо! Подписка оформлена.";
+  const badMsg = lang === "he"
+    ? "בדקו את כתובת האימייל"
+    : lang === "en" ? "Please check the email"
+    : "Проверьте адрес электронной почты";
+  return (
+    <section style={{ background: c.blueSoft }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "72px 32px", display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)", gap: 48, alignItems: "center" }}>
+        <div>
+          <h2 style={{ fontSize: 36, fontFamily: "var(--font-display)", letterSpacing: "-0.025em", fontWeight: 700, margin: 0 }}>{t.newsletterTitle}</h2>
+          <p style={{ fontSize: 16, color: c.ink2, margin: "12px 0 0", maxWidth: 460 }}>{t.newsletterLede}</p>
+        </div>
+        <form onSubmit={onSubmit} noValidate>
+          <div style={{ display: "flex", gap: 0, background: c.paper, borderRadius: 999, padding: 6, border: `1px solid ${state === "bad" ? c.red : c.hair}` }}>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={e => { setEmail(e.target.value); if (state !== "idle") setState("idle"); }}
+              placeholder={t.newsletterPh}
+              dir={dir}
+              aria-invalid={state === "bad"}
+              style={{
+                flex: 1, border: 0, outline: 0, background: "transparent",
+                padding: "14px 22px", fontSize: 15, fontFamily: "inherit",
+                textAlign: dir === "rtl" ? "right" : "left",
+              }} />
+            <button type="submit" style={{
+              background: c.blue, color: "white", border: 0, borderRadius: 999,
+              padding: "14px 28px", fontSize: 14.5, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
+            }}>{t.cta.subscribe}</button>
+          </div>
+          {state === "ok" && <div style={{ marginTop: 12, fontSize: 13.5, color: c.blueDeep, fontWeight: 600 }}>{okMsg}</div>}
+          {state === "bad" && <div style={{ marginTop: 12, fontSize: 13.5, color: c.red, fontWeight: 600 }}>{badMsg}</div>}
+        </form>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { SectionHome, HomeMock, BrowserFrame, FramedScaledMock, PositionIcon, NewsletterBlock });

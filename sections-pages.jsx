@@ -65,14 +65,22 @@ function MiniHeader({ lang = "ru", active = "home" }) {
 function BreadCrumb({ items, lang = "ru" }) {
   const c = PAGE_C;
   const dir = dirOf(lang);
+  // items may be strings (last is current) or { text, href }
+  const norm = items.map((x, i) => typeof x === "string" ? { text: x, href: null } : x);
   return (
-    <div dir={dir} style={{ fontSize: 12, color: c.ink3, padding: "20px 32px 0", maxWidth: 1280, margin: "0 auto", display: "flex", gap: 8, alignItems: "center", fontFamily: fontOf(lang) }}>
-      {items.map((x, i) => (
-        <React.Fragment key={i}>
-          <span style={{ color: i === items.length - 1 ? c.ink : c.ink3 }}>{x}</span>
-          {i < items.length - 1 ? <span style={{ color: c.ink4 }}>{dir === "rtl" ? "«" : "/"}</span> : null}
-        </React.Fragment>
-      ))}
+    <div dir={dir} style={{ fontSize: 12, color: c.ink3, padding: "20px 32px 0", maxWidth: 1280, margin: "0 auto", display: "flex", gap: 8, alignItems: "center", fontFamily: fontOf(lang), flexWrap: "wrap" }}>
+      {norm.map((x, i) => {
+        const isLast = i === norm.length - 1;
+        const label = isLast || !x.href
+          ? <span style={{ color: isLast ? c.ink : c.ink3 }}>{x.text}</span>
+          : <a href={x.href} style={{ color: c.ink3, textDecoration: "underline", textUnderlineOffset: 3 }}>{x.text}</a>;
+        return (
+          <React.Fragment key={i}>
+            {label}
+            {!isLast ? <span style={{ color: c.ink4 }}>{dir === "rtl" ? "«" : "/"}</span> : null}
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 }
@@ -84,7 +92,7 @@ const POSITION_DETAILS = {
     title: "ביטחון לאומי",
     titleBreak: ["ביטחון לאומי", "של מדינת ישראל"],
     lead: "ריבונות ישראלית, צה״ל חזק, הרתעה אזורית — שלוש האדנים שעליהם בנויה עמדת הליכוד בנושאי ביטחון.",
-    breadcrumbs: ["עמדות", "ביטחון לאומי"],
+    breadcrumbs: [{ text: "עמדות", href: "#/positions" }, "ביטחון לאומי"],
     metaUpdated: "עודכן: 28 במאי 2026", metaSection: "סעיף: ביטחון", metaCount: "מסמכים קשורים: 14",
     intro: "ביטחון ישראל אינו עמדה פוליטית — הוא תנאי קיום. הליכוד סובר שכל דיון על מדיניות פנים או חוץ חייב להתחיל מהאמירה הזו ולהיבחן מולה.",
     threePillarsHeading: "שלוש אדנים",
@@ -106,7 +114,7 @@ const POSITION_DETAILS = {
     title: "National Security",
     titleBreak: ["National Security", "of the State of Israel"],
     lead: "Israeli sovereignty, a strong IDF, and regional deterrence — the three pillars of the Likud's security position.",
-    breadcrumbs: ["Positions", "National Security"],
+    breadcrumbs: [{ text: "Positions", href: "#/positions" }, "National Security"],
     metaUpdated: "Updated: 28 May 2026", metaSection: "Section: Security", metaCount: "Related documents: 14",
     intro: "Israel's security is not a political position — it is a condition of existence. The Likud holds that any debate on domestic or foreign policy must begin from this premise and be measured against it.",
     threePillarsHeading: "Three pillars",
@@ -128,7 +136,7 @@ const POSITION_DETAILS = {
     title: "Национальная безопасность Израиля",
     titleBreak: ["Национальная", "безопасность Израиля"],
     lead: "Израильский суверенитет, сильный ЦАХАЛ и региональное сдерживание — три опоры, на которых строится позиция Ликуда по безопасности.",
-    breadcrumbs: ["Позиции", "Безопасность"],
+    breadcrumbs: [{ text: "Позиции", href: "#/positions" }, "Безопасность"],
     metaUpdated: "Обновлено: 28 мая 2026", metaSection: "Раздел: Безопасность", metaCount: "Связанных материалов: 14",
     intro: "Безопасность Израиля — не политическая позиция, а условие существования. Ликуд считает, что любая дискуссия о внутренней или внешней политике страны должна начинаться с этого тезиса и им же поверяться.",
     threePillarsHeading: "Три опоры",
@@ -163,14 +171,18 @@ function PagePosition({ lang = "ru", bare = false }) {
             <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 0.12, color: c.ink3, marginBottom: 14 }}>{p.allPositionsTitle}</div>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 4 }}>
               {t.positionsList.map((pp, i) => (
-                <li key={i} style={{
-                  padding: "10px 14px", borderRadius: 8,
-                  background: i === 0 ? c.blueSoft : "transparent",
-                  color: i === 0 ? c.blueDeep : c.ink2,
-                  fontWeight: i === 0 ? 600 : 500,
-                  fontSize: 13.5,
-                  borderInlineStart: i === 0 ? `2px solid ${c.blue}` : "2px solid transparent",
-                }}>{pp.title}</li>
+                <li key={i}>
+                  <a href={i === 0 ? "#/position-detail" : "#/positions"} style={{
+                    display: "block",
+                    padding: "10px 14px", borderRadius: 8,
+                    background: i === 0 ? c.blueSoft : "transparent",
+                    color: i === 0 ? c.blueDeep : c.ink2,
+                    fontWeight: i === 0 ? 600 : 500,
+                    fontSize: 13.5,
+                    borderInlineStart: i === 0 ? `2px solid ${c.blue}` : "2px solid transparent",
+                    textDecoration: "none",
+                  }}>{pp.title}</a>
+                </li>
               ))}
             </ul>
           </aside>
@@ -915,27 +927,8 @@ function PageContact({ lang = "ru", bare = false }) {
           ))}
         </div>
 
-        <div style={{ padding: 28, border: `1px solid ${c.hair}`, borderRadius: 16, background: c.paper2 }}>
-          <h2 style={{ fontFamily: "var(--font-display)", fontSize: 24, margin: 0, fontWeight: 700, letterSpacing: "-0.015em" }}>{L.formTitle}</h2>
-          <p style={{ fontSize: 13, color: c.ink3, margin: "6px 0 24px" }}>{L.formNote}</p>
-          <div style={{ display: "grid", gap: 14 }}>
-            {L.fields.map((fl, i) => (
-              <div key={fl}>
-                <label style={{ fontSize: 12, color: c.ink3, textTransform: "uppercase", letterSpacing: 0.08, fontWeight: 600 }}>{fl}</label>
-                {i === 3 ? (
-                  <textarea rows="4" style={{ width: "100%", marginTop: 6, border: `1px solid ${c.hair}`, borderRadius: 10, padding: "12px 14px", fontSize: 14, fontFamily: "inherit", resize: "vertical", outline: "none", textAlign: dir === "rtl" ? "right" : "left" }} />
-                ) : (
-                  <input style={{ width: "100%", marginTop: 6, border: `1px solid ${c.hair}`, borderRadius: 10, padding: "12px 14px", fontSize: 14, fontFamily: "inherit", outline: "none", textAlign: dir === "rtl" ? "right" : "left" }} />
-                )}
-              </div>
-            ))}
-            <label style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 12.5, color: c.ink2, lineHeight: 1.5 }}>
-              <input type="checkbox" style={{ marginTop: 3, accentColor: c.blue }} />
-              <span>{L.legal}</span>
-            </label>
-            <button style={{ background: c.blue, color: "white", border: 0, borderRadius: 999, padding: "14px 28px", fontSize: 14.5, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", marginTop: 4 }}>{L.submit}</button>
-          </div>
-        </div>
+        <ContactForm lang={lang} dir={dir} L={L} c={c} />
+
       </section>
     </div>
   );
@@ -1007,8 +1000,71 @@ function FramedPage({ Comp, lang = "ru" }) {
   );
 }
 
+function ContactForm({ lang, dir, L, c }) {
+  const [vals, setVals] = React.useState({ name: "", email: "", subject: "", body: "" });
+  const [agreed, setAgreed] = React.useState(false);
+  const [state, setState] = React.useState("idle"); // idle | ok | bad
+
+  const keys = ["name", "email", "subject", "body"];
+  const okMsg = lang === "he" ? "תודה! פנייתכם התקבלה."
+    : lang === "en" ? "Thanks — your message has been received."
+    : "Спасибо! Ваше сообщение принято.";
+  const badMsg = lang === "he" ? "בדקו את השדות והאישור"
+    : lang === "en" ? "Please complete all fields and confirm consent"
+    : "Заполните все поля и подтвердите согласие";
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const okEmail = /^\S+@\S+\.\S+$/.test(vals.email);
+    if (!agreed || !vals.name.trim() || !okEmail || !vals.subject.trim() || !vals.body.trim()) {
+      setState("bad");
+      return;
+    }
+    setState("ok");
+    setVals({ name: "", email: "", subject: "", body: "" });
+    setAgreed(false);
+  };
+
+  return (
+    <form onSubmit={onSubmit} noValidate style={{ padding: 28, border: `1px solid ${state === "bad" ? c.red : c.hair}`, borderRadius: 16, background: c.paper2 }}>
+      <h2 style={{ fontFamily: "var(--font-display)", fontSize: 24, margin: 0, fontWeight: 700, letterSpacing: "-0.015em" }}>{L.formTitle}</h2>
+      <p style={{ fontSize: 13, color: c.ink3, margin: "6px 0 24px" }}>{L.formNote}</p>
+      <div style={{ display: "grid", gap: 14 }}>
+        {L.fields.map((fl, i) => {
+          const k = keys[i];
+          return (
+            <div key={fl}>
+              <label style={{ fontSize: 12, color: c.ink3, textTransform: "uppercase", letterSpacing: 0.08, fontWeight: 600 }}>{fl}</label>
+              {i === 3 ? (
+                <textarea
+                  rows="4"
+                  value={vals[k]}
+                  onChange={e => { setVals({ ...vals, [k]: e.target.value }); if (state !== "idle") setState("idle"); }}
+                  style={{ width: "100%", marginTop: 6, border: `1px solid ${c.hair}`, borderRadius: 10, padding: "12px 14px", fontSize: 14, fontFamily: "inherit", resize: "vertical", outline: "none", textAlign: dir === "rtl" ? "right" : "left" }} />
+              ) : (
+                <input
+                  type={i === 1 ? "email" : "text"}
+                  value={vals[k]}
+                  onChange={e => { setVals({ ...vals, [k]: e.target.value }); if (state !== "idle") setState("idle"); }}
+                  style={{ width: "100%", marginTop: 6, border: `1px solid ${c.hair}`, borderRadius: 10, padding: "12px 14px", fontSize: 14, fontFamily: "inherit", outline: "none", textAlign: dir === "rtl" ? "right" : "left" }} />
+              )}
+            </div>
+          );
+        })}
+        <label style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 12.5, color: c.ink2, lineHeight: 1.5 }}>
+          <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} style={{ marginTop: 3, accentColor: c.blue }} />
+          <span>{L.legal}</span>
+        </label>
+        <button type="submit" style={{ background: c.blue, color: "white", border: 0, borderRadius: 999, padding: "14px 28px", fontSize: 14.5, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", marginTop: 4 }}>{L.submit}</button>
+        {state === "ok" && <div style={{ marginTop: 8, fontSize: 13.5, color: c.blueDeep, fontWeight: 600 }}>{okMsg}</div>}
+        {state === "bad" && <div style={{ marginTop: 8, fontSize: 13.5, color: c.red, fontWeight: 600 }}>{badMsg}</div>}
+      </div>
+    </form>
+  );
+}
+
 Object.assign(window, {
   SectionPages, FramedPage,
   PagePosition, PageNews, PageLeader, PageJoin, PageBranches, PageContact,
-  MiniHeader, BreadCrumb, FACTION_MKS, BRANCHES_DATA,
+  MiniHeader, BreadCrumb, FACTION_MKS, BRANCHES_DATA, ContactForm,
 });

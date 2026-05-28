@@ -346,14 +346,14 @@ function SiteHeader({ lang, setLang, route, onNav, onBurger }) {
               : "Четверг, 28 мая 2026"}
           </span>
           <span style={{ display: "inline-flex", gap: 16, alignItems: "center" }}>
-            <a onClick={() => onNav("primaries")} style={{ cursor: "pointer" }}>{t.nav.primaries}</a>
+            <a href="#/primaries" style={{ cursor: "pointer" }}>{t.nav.primaries}</a>
             <span>·</span>
             <span>{lang === "he" ? "מצב נגישות: A− A A+" : lang === "en" ? "Accessibility: A− A A+" : "Доступность: A− A A+"}</span>
           </span>
         </div>
       </div>
       <div className="site-nav">
-        <a className="site-nav-brand" onClick={() => onNav("home")}>
+        <a className="site-nav-brand" href="#/home">
           <span className="site-nav-mark" aria-hidden="true">
             <span style={{ fontFamily: 'var(--font-display)', display: 'inline-block', transform: 'translateY(-1px)' }}>הל</span>
           </span>
@@ -369,8 +369,8 @@ function SiteHeader({ lang, setLang, route, onNav, onBurger }) {
         <nav className="site-nav-menu" aria-label="Main">
           {NAV_ROUTES.map(r => (
             <a key={r.id}
-               className={r.id === route || (route === "position-detail" && r.id === "positions") ? "is-active" : ""}
-               onClick={() => onNav(r.id)}>
+               href={"#/" + r.id}
+               className={r.id === route || (route === "position-detail" && r.id === "positions") ? "is-active" : ""}>
               {t.nav[r.keyN]}
             </a>
           ))}
@@ -387,7 +387,7 @@ function SiteHeader({ lang, setLang, route, onNav, onBurger }) {
               </button>
             ))}
           </div>
-          <button className="nav-cta" onClick={() => onNav("join")}>{t.cta.join}</button>
+          <a className="nav-cta" href="#/join">{t.cta.join}</a>
           <button className="nav-burger" aria-label="Menu" onClick={onBurger}>
             <span /><span /><span />
           </button>
@@ -420,32 +420,43 @@ function SiteFooter({ lang, onNav }) {
           <div>
             <h4>{t.nav.about}</h4>
             <ul>
-              <li><a onClick={() => onNav("about")}>{t.nav.about}</a></li>
-              <li><a onClick={() => onNav("leadership")}>{t.nav.leadership}</a></li>
-              <li><a onClick={() => onNav("primaries")}>{t.nav.primaries}</a></li>
+              <li><a href="#/about">{t.nav.about}</a></li>
+              <li><a href="#/leadership">{t.nav.leadership}</a></li>
+              <li><a href="#/primaries">{t.nav.primaries}</a></li>
             </ul>
           </div>
           <div>
             <h4>{t.nav.positions}</h4>
             <ul>
               {t.positionsList.slice(0, 4).map((p, i) => (
-                <li key={i}><a onClick={() => onNav("positions")}>{p.title}</a></li>
+                <li key={i}><a href="#/positions">{p.title}</a></li>
               ))}
             </ul>
           </div>
           <div>
             <h4>{t.nav.contact}</h4>
             <ul>
-              <li><a onClick={() => onNav("contact")}>{t.nav.contact}</a></li>
-              <li><a onClick={() => onNav("branches")}>{t.nav.branches}</a></li>
-              <li><a onClick={() => onNav("join")}>{t.cta.subscribe}</a></li>
+              <li><a href="#/contact">{t.nav.contact}</a></li>
+              <li><a href="#/branches">{t.nav.branches}</a></li>
+              <li><a href="#/join">{t.cta.subscribe}</a></li>
             </ul>
           </div>
+        </div>
+        <div className="site-footer-social" style={{ paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.12)", display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+          <span style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 0.12, color: "rgba(255,255,255,0.5)" }}>
+            {lang === "he" ? "רשתות חברתיות" : lang === "en" ? "Follow" : "Соцсети"}
+          </span>
+          <a href="https://www.facebook.com/LikudNetanyahu" target="_blank" rel="noopener" style={{ color: "rgba(255,255,255,0.85)", textDecoration: "underline" }}>Facebook</a>
+          <a href="https://twitter.com/netanyahu" target="_blank" rel="noopener" style={{ color: "rgba(255,255,255,0.85)", textDecoration: "underline" }}>X / Twitter</a>
+          <a href="https://www.youtube.com/user/Netanyahu/featured" target="_blank" rel="noopener" style={{ color: "rgba(255,255,255,0.85)", textDecoration: "underline" }}>YouTube</a>
         </div>
         <div className="site-footer-legal">
           <span>{t.footerLegal}</span>
           <span style={{ display: "inline-flex", gap: 18 }}>
-            {t.footerMeta.map((m, i) => <span key={i}>{m}</span>)}
+            {t.footerMeta.map((m, i) => {
+              const hrefs = ["#/contact", "#/contact", "#/contact"];
+              return <a key={i} href={hrefs[i] || "#/contact"} style={{ color: "rgba(255,255,255,0.55)", textDecoration: "underline" }}>{m}</a>;
+            })}
           </span>
         </div>
       </div>
@@ -473,8 +484,9 @@ function MobileMenu({ open, lang, route, onNav, onClose, setLang }) {
       <nav>
         {NAV_ROUTES.map(r => (
           <a key={r.id}
+             href={"#/" + r.id}
              className={r.id === route ? "is-active" : ""}
-             onClick={() => { onNav(r.id); onClose(); }}>{t.nav[r.keyN]}</a>
+             onClick={() => onClose()}>{t.nav[r.keyN]}</a>
         ))}
       </nav>
       <div className="mobile-menu-bottom">
@@ -485,7 +497,7 @@ function MobileMenu({ open, lang, route, onNav, onClose, setLang }) {
               onClick={() => setLang(L.code)}>{L.short}</button>
           ))}
         </div>
-        <button className="nav-cta" style={{ flex: 1 }} onClick={() => { onNav("join"); onClose(); }}>{t.cta.join}</button>
+        <a className="nav-cta" href="#/join" style={{ flex: 1, textAlign: "center" }} onClick={() => onClose()}>{t.cta.join}</a>
       </div>
     </div>
   );
@@ -666,8 +678,8 @@ function App() {
 
       {/* Sticky mobile CTA */}
       <div className="mobile-cta">
-        <button className="secondary" onClick={() => go("join")}>{CONTENT[lang].cta.support}</button>
-        <button className="primary" onClick={() => go("join")}>{CONTENT[lang].cta.join}</button>
+        <a className="secondary" href="#/join" style={{ display: "grid", placeItems: "center", textDecoration: "none" }}>{CONTENT[lang].cta.support}</a>
+        <a className="primary" href="#/join" style={{ display: "grid", placeItems: "center", textDecoration: "none" }}>{CONTENT[lang].cta.join}</a>
       </div>
 
       {/* Tweaks panel for language only */}
