@@ -17,3 +17,6 @@ dist/
 build/
 .next/
 .cache/
+
+# Local Claude preview config
+.claude/
