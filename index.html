@@ -597,11 +597,11 @@ function AboutPage({ lang }) {
   );
 }
 
-// Wrappers for the existing Russian pages (kept Russian, headers hidden)
-function WrapRu({ Comp }) {
+// Page-frame wrapper that passes lang through to the multilingual page components.
+function Wrap({ Comp, lang }) {
   return (
     <div className="page-frame">
-      <Comp bare={true} />
+      <Comp lang={lang} bare={true} />
     </div>
   );
 }
@@ -634,14 +634,14 @@ function App() {
     switch (route) {
       case "home":            return <HomePage lang={lang} />;
       case "about":           return <AboutPage lang={lang} />;
-      case "leadership":      return <WrapRu Comp={PageLeader} />;
+      case "leadership":      return <Wrap Comp={PageLeader} lang={lang} />;
       case "positions":       return <PositionsListPage lang={lang} />;
-      case "position-detail": return <WrapRu Comp={PagePosition} />;
-      case "news":            return <WrapRu Comp={PageNews} />;
-      case "primaries":       return <WrapRu Comp={PageNews} />;
-      case "join":            return <WrapRu Comp={PageJoin} />;
-      case "branches":        return <WrapRu Comp={PageBranches} />;
-      case "contact":         return <WrapRu Comp={PageContact} />;
+      case "position-detail": return <Wrap Comp={PagePosition} lang={lang} />;
+      case "news":            return <Wrap Comp={PageNews} lang={lang} />;
+      case "primaries":       return <Wrap Comp={PageNews} lang={lang} />;
+      case "join":            return <Wrap Comp={PageJoin} lang={lang} />;
+      case "branches":        return <Wrap Comp={PageBranches} lang={lang} />;
+      case "contact":         return <Wrap Comp={PageContact} lang={lang} />;
       default:                return <HomePage lang={lang} />;
     }
   })();
