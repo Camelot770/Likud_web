@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="ru" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>הליכוד · Likud · Ликуд — официальный сайт партии</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --likud-blue: #0038B8;
+    --likud-blue-deep: #002A6E;
+    --likud-blue-ink: #001541;
+    --likud-blue-soft: #E6EDF8;
+    --likud-blue-mist: #F3F6FB;
+    --likud-red: #C8102E;
+    --ink: #0A1426;
+    --ink-2: #38465C;
+    --ink-3: #6E7A8E;
+    --paper: #FFFFFF;
+    --paper-2: #FAFBFD;
+    --hairline: #E3E7EE;
+    --font-display: "Rubik", "Heebo", system-ui, sans-serif;
+    --font-body: "Rubik", "Heebo", system-ui, sans-serif;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-fast: 180ms;
+    --dur: 260ms;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--paper); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body:lang(he) { font-family: "Heebo", "Rubik", system-ui, sans-serif; }
+  body[dir="rtl"] { direction: rtl; }
+  ::selection { background: var(--likud-blue); color: white; }
+  a { color: inherit; text-decoration: none; }
+
+  /* Site shell */
+  .site {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Skip link */
+  .skip {
+    position: absolute;
+    top: -100px; left: 16px;
+    background: var(--likud-blue);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    z-index: 100;
+    transition: top var(--dur) var(--ease);
+  }
+  .skip:focus { top: 16px; outline: 2px solid #fff; outline-offset: 2px; }
+
+  /* Global header */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .site-topbar {
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--hairline);
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+  .site-topbar-inner {
+    max-width: 1280px; margin: 0 auto;
+    padding: 8px 24px;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  }
+  .site-nav {
+    max-width: 1280px; margin: 0 auto;
+    padding: 18px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .site-nav-brand {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none; color: var(--ink);
+  }
+  .site-nav-mark {
+    width: 40px; height: 40px;
+    background: var(--likud-blue); color: white;
+    border-radius: 8px;
+    display: grid; place-items: center;
+    font-weight: 800; font-size: 16px; letter-spacing: -0.02em;
+    font-family: var(--font-display);
+  }
+  .site-nav-brand-name {
+    font-weight: 800; font-size: 17px; letter-spacing: -0.02em; line-height: 1;
+  }
+  .site-nav-brand-kicker {
+    font-size: 10px; color: var(--ink-3);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin-top: 4px;
+  }
+  .site-nav-menu {
+    display: flex; align-items: center; gap: 22px;
+    font-size: 14.5px; font-weight: 500;
+  }
+  .site-nav-menu a {
+    color: var(--ink-2);
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+    cursor: pointer;
+  }
+  .site-nav-menu a:hover { color: var(--likud-blue); }
+  .site-nav-menu a.is-active {
+    color: var(--likud-blue);
+    border-bottom-color: var(--likud-blue);
+  }
+  .site-nav-tools {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .lang-pill {
+    display: inline-flex; gap: 2px; padding: 3px;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    font-size: 11px; font-weight: 600;
+    background: var(--paper);
+  }
+  .lang-pill button {
+    border: 0; background: transparent;
+    padding: 5px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--ink-3);
+    font-family: inherit; font-size: 11px; font-weight: 600;
+    transition: all var(--dur-fast) var(--ease);
+  }
+  .lang-pill button.is-active {
+    background: var(--likud-blue);
+    color: white;
+  }
+  .nav-cta {
+    background: var(--likud-blue); color: white;
+    border: 0; border-radius: 999px;
+    padding: 10px 20px;
+    font-size: 13.5px; font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background var(--dur-fast) var(--ease);
+  }
+  .nav-cta:hover { background: var(--likud-blue-deep); }
+  .nav-burger {
+    display: none;
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--hairline);
+    background: var(--paper);
+    cursor: pointer;
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 4px;
+  }
+  .nav-burger span {
+    width: 18px; height: 1.5px; background: var(--ink);
+    transition: transform var(--dur) var(--ease);
+  }
+
+  /* Page area */
+  .site-main {
+    flex: 1;
+    overflow-x: auto;
+  }
+  /* Each page renders inside this container; pages are 1280px wide */
+  .page-frame {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    background: var(--paper);
+  }
+  .page-frame > * {
+    margin: 0 auto;
+  }
+
+  /* Global footer */
+  .site-footer {
+    background: var(--likud-blue-ink);
+    color: white;
+    padding: 64px 24px 28px;
+  }
+  .site-footer-inner {
+    max-width: 1280px; margin: 0 auto;
+  }
+  .site-footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .site-footer h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.55);
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+  .site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 13.5px; }
+  .site-footer ul a { color: rgba(255,255,255,0.82); cursor: pointer; transition: color var(--dur-fast); }
+  .site-footer ul a:hover { color: white; }
+  .site-footer-legal {
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: rgba(255,255,255,0.55);
+    flex-wrap: wrap; gap: 12px;
+  }
+
+  /* Sticky mobile CTA */
+  .mobile-cta {
+    display: none;
+    position: fixed;
+    bottom: 16px; left: 16px; right: 16px;
+    z-index: 60;
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    box-shadow: 0 16px 40px -8px rgba(0,42,110,0.32);
+    padding: 6px;
+    align-items: center; justify-content: space-between;
+    gap: 6px;
+  }
+  .mobile-cta button {
+    flex: 1; border: 0;
+    padding: 12px 0;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 13.5px; font-weight: 600;
+    cursor: pointer;
+  }
+  .mobile-cta .primary { background: var(--likud-blue); color: white; }
+  .mobile-cta .secondary { background: transparent; color: var(--ink); }
+
+  /* Mobile menu overlay */
+  .mobile-menu {
+    position: fixed; inset: 0; z-index: 80;
+    background: var(--likud-blue-ink);
+    color: white;
+    display: none;
+    flex-direction: column;
+    padding: 24px;
+  }
+  .mobile-menu.is-open { display: flex; }
+  .mobile-menu-top {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.18);
+  }
+  .mobile-menu nav {
+    margin-top: 32px;
+    display: grid; gap: 0;
+  }
+  .mobile-menu nav a {
+    font-family: var(--font-display);
+    font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    color: white; cursor: pointer;
+  }
+  .mobile-menu nav a.is-active { color: #6E9DFF; }
+  .mobile-menu-bottom {
+    margin-top: auto;
+    padding-top: 24px;
+    display: flex; gap: 12px;
+  }
+
+  /* Mobile breakpoints */
+  @media (max-width: 900px) {
+    .site-nav-menu { display: none; }
+    .nav-burger { display: flex; }
+    .nav-cta { display: none; }
+    .mobile-cta { display: flex; }
+    .site-topbar { display: none; }
+    .site-footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  }
+  @media (max-width: 540px) {
+    .site-footer-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <a href="#main" class="skip">К основному содержимому</a>
+  <div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="shared.jsx"></script>
+<script type="text/babel" src="sections-home.jsx"></script>
+<script type="text/babel" src="sections-pages.jsx"></script>
+<script type="text/babel">
+// ===== Site app =====
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "lang": "ru"
+}/*EDITMODE-END*/;
+
+const NAV_ROUTES = [
+  { id: "home",      keyN: "home" },
+  { id: "about",     keyN: "about" },
+  { id: "leadership", keyN: "leadership" },
+  { id: "positions", keyN: "positions" },
+  { id: "news",      keyN: "news" },
+  { id: "branches",  keyN: "branches" },
+  { id: "contact",   keyN: "contact" },
+];
+
+function useHashRoute() {
+  const [route, setRoute] = React.useState(() => {
+    const h = window.location.hash.replace(/^#\/?/, "");
+    return h || "home";
+  });
+  React.useEffect(() => {
+    const fn = () => {
+      const h = window.location.hash.replace(/^#\/?/, "");
+      setRoute(h || "home");
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener("hashchange", fn);
+    return () => window.removeEventListener("hashchange", fn);
+  }, []);
+  const go = (id) => { window.location.hash = "#/" + id; };
+  return [route, go];
+}
+
+function SiteHeader({ lang, setLang, route, onNav, onBurger }) {
+  const t = CONTENT[lang];
+  const dir = lang === "he" ? "rtl" : "ltr";
+  return (
+    <header className="site-header" dir={dir}>
+      <div className="site-topbar">
+        <div className="site-topbar-inner">
+          <span>
+            {lang === "he" ? <bdi>חמישי, 28 במאי 2026 · י״ב סיון התשפ״ו</bdi>
+              : lang === "en" ? "Thursday, May 28, 2026"
+              : "Четверг, 28 мая 2026"}
+          </span>
+          <span style={{ display: "inline-flex", gap: 16, alignItems: "center" }}>
+            <a onClick={() => onNav("primaries")} style={{ cursor: "pointer" }}>{t.nav.primaries}</a>
+            <span>·</span>
+            <span>{lang === "he" ? "מצב נגישות: A− A A+" : lang === "en" ? "Accessibility: A− A A+" : "Доступность: A− A A+"}</span>
+          </span>
+        </div>
+      </div>
+      <div className="site-nav">
+        <a className="site-nav-brand" onClick={() => onNav("home")}>
+          <span className="site-nav-mark" aria-hidden="true">
+            <span style={{ fontFamily: 'var(--font-display)', display: 'inline-block', transform: 'translateY(-1px)' }}>הל</span>
+          </span>
+          <span>
+            <div className="site-nav-brand-name">{lang === "he" ? "הליכוד" : "LIKUD"}</div>
+            <div className="site-nav-brand-kicker">
+              {lang === "he" ? "מפלגת הליכוד הרשמית"
+                : lang === "en" ? "The Official Likud Party"
+                : "Официальный сайт партии Ликуд"}
+            </div>
+          </span>
+        </a>
+        <nav className="site-nav-menu" aria-label="Main">
+          {NAV_ROUTES.map(r => (
+            <a key={r.id}
+               className={r.id === route || (route === "position-detail" && r.id === "positions") ? "is-active" : ""}
+               onClick={() => onNav(r.id)}>
+              {t.nav[r.keyN]}
+            </a>
+          ))}
+        </nav>
+        <div className="site-nav-tools">
+          <div className="lang-pill" role="tablist" aria-label="Language">
+            {LANGS.map(L => (
+              <button key={L.code}
+                role="tab"
+                aria-selected={lang === L.code}
+                className={lang === L.code ? "is-active" : ""}
+                onClick={() => setLang(L.code)}>
+                {L.short}
+              </button>
+            ))}
+          </div>
+          <button className="nav-cta" onClick={() => onNav("join")}>{t.cta.join}</button>
+          <button className="nav-burger" aria-label="Menu" onClick={onBurger}>
+            <span /><span /><span />
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function SiteFooter({ lang, onNav }) {
+  const t = CONTENT[lang];
+  const dir = lang === "he" ? "rtl" : "ltr";
+  return (
+    <footer className="site-footer" dir={dir}>
+      <div className="site-footer-inner">
+        <div className="site-footer-grid">
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+              <span className="site-nav-mark" aria-hidden="true">
+                <span style={{ fontFamily: 'var(--font-display)', display: 'inline-block', transform: 'translateY(-1px)' }}>הל</span>
+              </span>
+              <span style={{ fontWeight: 800, fontSize: 17, letterSpacing: "-0.02em" }}>{lang === "he" ? "הליכוד" : "LIKUD"}</span>
+            </div>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.68)", lineHeight: 1.6, margin: 0, maxWidth: 320 }}>
+              {lang === "he" ? "כתובתנו: המלך ג׳ורג׳ 38, תל אביב · ת.ד. 56216, תל-אביב 6156101 · טלפון 03-6210666"
+                : lang === "en" ? "Party HQ · 38 King George St., Tel Aviv · P.O.B. 56216, Tel Aviv 6156101 · Tel +972-3-6210666"
+                : "Штаб партии · ул. Кинг-Джордж, 38, Тель-Авив · а/я 56216, Тель-Авив 6156101 · Тел. +972-3-6210666"}
+            </p>
+          </div>
+          <div>
+            <h4>{t.nav.about}</h4>
+            <ul>
+              <li><a onClick={() => onNav("about")}>{t.nav.about}</a></li>
+              <li><a onClick={() => onNav("leadership")}>{t.nav.leadership}</a></li>
+              <li><a onClick={() => onNav("primaries")}>{t.nav.primaries}</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>{t.nav.positions}</h4>
+            <ul>
+              {t.positionsList.slice(0, 4).map((p, i) => (
+                <li key={i}><a onClick={() => onNav("positions")}>{p.title}</a></li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4>{t.nav.contact}</h4>
+            <ul>
+              <li><a onClick={() => onNav("contact")}>{t.nav.contact}</a></li>
+              <li><a onClick={() => onNav("branches")}>{t.nav.branches}</a></li>
+              <li><a onClick={() => onNav("join")}>{t.cta.subscribe}</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="site-footer-legal">
+          <span>{t.footerLegal}</span>
+          <span style={{ display: "inline-flex", gap: 18 }}>
+            {t.footerMeta.map((m, i) => <span key={i}>{m}</span>)}
+          </span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function MobileMenu({ open, lang, route, onNav, onClose, setLang }) {
+  const t = CONTENT[lang];
+  const dir = lang === "he" ? "rtl" : "ltr";
+  return (
+    <div className={"mobile-menu" + (open ? " is-open" : "")} dir={dir}>
+      <div className="mobile-menu-top">
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span className="site-nav-mark" aria-hidden="true">
+            <span style={{ fontFamily: 'var(--font-display)', transform: 'translateY(-1px)' }}>הל</span>
+          </span>
+          <span style={{ fontWeight: 800, fontSize: 17 }}>{lang === "he" ? "הליכוד" : "LIKUD"}</span>
+        </div>
+        <button onClick={onClose} aria-label="Close" style={{
+          width: 40, height: 40, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)",
+          background: "transparent", color: "white", cursor: "pointer", fontSize: 22, lineHeight: 1,
+        }}>×</button>
+      </div>
+      <nav>
+        {NAV_ROUTES.map(r => (
+          <a key={r.id}
+             className={r.id === route ? "is-active" : ""}
+             onClick={() => { onNav(r.id); onClose(); }}>{t.nav[r.keyN]}</a>
+        ))}
+      </nav>
+      <div className="mobile-menu-bottom">
+        <div className="lang-pill" style={{ background: "transparent", borderColor: "rgba(255,255,255,0.2)" }}>
+          {LANGS.map(L => (
+            <button key={L.code}
+              className={lang === L.code ? "is-active" : ""}
+              onClick={() => setLang(L.code)}>{L.short}</button>
+          ))}
+        </div>
+        <button className="nav-cta" style={{ flex: 1 }} onClick={() => { onNav("join"); onClose(); }}>{t.cta.join}</button>
+      </div>
+    </div>
+  );
+}
+
+// === Page wrappers ===
+
+function HomePage({ lang }) {
+  return (
+    <div className="page-frame">
+      <HomeMock lang={lang} scale={1} chrome={false} />
+    </div>
+  );
+}
+
+function PositionsListPage({ lang }) {
+  const c = { blue: "#0038B8", blueDeep: "#002A6E", blueSoft: "#E6EDF8", blueMist: "#F3F6FB", ink: "#0A1426", ink2: "#38465C", ink3: "#6E7A8E", hair: "#E3E7EE" };
+  const t = CONTENT[lang];
+  const dir = lang === "he" ? "rtl" : "ltr";
+  return (
+    <div className="page-frame" dir={dir} lang={lang} style={{ fontFamily: lang === "he" ? '"Heebo", "Rubik", sans-serif' : '"Rubik", sans-serif' }}>
+      <div style={{ maxWidth: 1280, padding: "64px 24px", color: c.ink, margin: "0 auto" }}>
+        <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 0.16, color: c.blue, fontWeight: 600 }}>{t.positionsKicker}</div>
+        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 7vw, 72px)", fontWeight: 800, letterSpacing: "-0.03em", margin: "12px 0 16px", lineHeight: 1.02, textWrap: "balance" }}>
+          {t.positionsTitle}
+        </h1>
+        <p style={{ fontSize: 18, color: c.ink2, margin: "0 0 48px", maxWidth: 640, lineHeight: 1.55 }}>
+          {lang === "he" ? "שש עמדות מרכזיות. כל אחת — דף בנפרד עם הנימוקים, ההקשר וחומרי הרקע."
+            : lang === "en" ? "Six core positions. Each gets its own page with reasoning, context, and source materials."
+            : "Шесть ключевых позиций. У каждой — отдельная страница с обоснованием, контекстом и материалами."}
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 0, border: `1px solid ${c.hair}`, borderRadius: 16, overflow: "hidden" }}>
+          {t.positionsList.map((p, i) => (
+            <a key={i}
+               href="#/position-detail"
+               style={{
+                 display: "block",
+                 padding: "32px 28px",
+                 borderRight: (i + 1) % 3 === 0 ? 0 : `1px solid ${c.hair}`,
+                 borderBottom: i < 3 ? `1px solid ${c.hair}` : 0,
+                 background: "white",
+                 transition: "background var(--dur-fast) var(--ease)",
+                 cursor: "pointer",
+                 color: c.ink, textDecoration: "none",
+               }}
+               onMouseEnter={e => e.currentTarget.style.background = c.blueMist}
+               onMouseLeave={e => e.currentTarget.style.background = "white"}>
+              <div style={{ width: 40, height: 40, background: c.blueSoft, borderRadius: 10, marginBottom: 20, display: "grid", placeItems: "center", color: c.blueDeep }}>
+                <PositionIcon i={i} />
+              </div>
+              <h3 style={{ fontSize: 22, margin: "0 0 10px", fontWeight: 600, letterSpacing: "-0.015em" }}>{p.title}</h3>
+              <p style={{ fontSize: 14.5, color: c.ink2, lineHeight: 1.55, margin: 0 }}>{p.text}</p>
+              <div style={{ marginTop: 22, fontSize: 13, color: c.blue, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 8 }}>
+                {t.cta.more} <ArrowNext size={14} dir={dir} />
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AboutPage({ lang }) {
+  const c = { blue: "#0038B8", blueDeep: "#002A6E", blueSoft: "#E6EDF8", blueInk: "#001541", ink: "#0A1426", ink2: "#38465C", ink3: "#6E7A8E", hair: "#E3E7EE" };
+  const t = CONTENT[lang];
+  const dir = lang === "he" ? "rtl" : "ltr";
+  const bio = lang === "he"
+    ? { kicker: "המפלגה", title: "מפלגת הליכוד · 1973–2026", lead: "ארבעה עשורים של אחריות לאומית. מ-1977 ועד היום — המפלגה הימנית-ליברלית הגדולה ביותר במדינת ישראל.",
+        sections: [
+          { h: "1973 · ייסוד", t: "מנחם בגין מאחד מספר תנועות לכוח פוליטי אחד. תוך ארבע שנים — מהפך 1977." },
+          { h: "ערכים", t: "ריבונות יהודית, ארץ ישראל השלמה כעקרון, שוק חופשי, חיזוק הפריפריה ושירות צבא חובה." },
+          { h: "מוסדות המפלגה", t: "ועידת המפלגה, מרכז המפלגה, מזכירות, בית דין ועדת ביקורת. כולם נבחרים בהליך פנימי דמוקרטי." },
+          { h: "היום", t: "32 ח״כים, 120 סניפים, יותר מ-150 אלף חברים פעילים. המפלגה הוותיקה במדינה — וגם הפעילה ביותר." },
+        ]}
+    : lang === "en"
+    ? { kicker: "Our Party", title: "The Likud Party · 1973–2026", lead: "Four decades of national responsibility. From 1977 to today — Israel's largest national-liberal party.",
+        sections: [
+          { h: "1973 · Founding", t: "Menachem Begin unites several movements into a single political force. Four years later — the 1977 political upheaval (Mahapach)." },
+          { h: "Values", t: "Jewish sovereignty, the integrity of the Land of Israel as principle, free markets, periphery development, and universal military service." },
+          { h: "Party institutions", t: "The Convention, the Central Committee, the Secretariat, the Internal Court (Beit Din), and the Comptroller's Commission. All elected through internal democratic processes." },
+          { h: "Today", t: "32 MKs, 120 branches, more than 150,000 active members. The country's oldest party — and the most active." },
+        ]}
+    : { kicker: "О партии", title: "Партия Ликуд · 1973–2026", lead: "Сорок лет ответственности за страну. С 1977 года и до сегодня — крупнейшая национально-либеральная партия Израиля.",
+        sections: [
+          { h: "1973 · Основание", t: "Менахем Бегин объединяет несколько движений в одну политическую силу. Через четыре года — политический переворот 1977 года («Махапах»)." },
+          { h: "Ценности", t: "Еврейский суверенитет, целостность Земли Израиля как принцип, свободный рынок, развитие периферии, всеобщая воинская обязанность." },
+          { h: "Институты партии", t: "Съезд, Центр партии, секретариат, Бейт-Дин (партийный суд), Ревизионная комиссия. Все избираются через внутренние демократические процедуры." },
+          { h: "Сегодня", t: "32 депутата Кнессета, 120 отделений, более 150 000 активных членов. Старейшая партия страны — и самая активная." },
+        ]};
+  return (
+    <div className="page-frame" dir={dir} lang={lang} style={{ fontFamily: lang === "he" ? '"Heebo", "Rubik", sans-serif' : '"Rubik", sans-serif' }}>
+      <div style={{ maxWidth: 1280, padding: "64px 24px", margin: "0 auto", color: c.ink }}>
+        <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 0.16, color: c.blue, fontWeight: 600 }}>{bio.kicker}</div>
+        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 7vw, 72px)", fontWeight: 800, letterSpacing: "-0.03em", margin: "12px 0 16px", lineHeight: 1.02 }}>{bio.title}</h1>
+        <p style={{ fontSize: 19, color: c.ink2, lineHeight: 1.55, margin: "0 0 48px", maxWidth: 720 }}>{bio.lead}</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 0, border: `1px solid ${c.hair}`, borderRadius: 16, overflow: "hidden" }}>
+          {bio.sections.map((s, i) => (
+            <div key={i} style={{ padding: "32px 28px", background: "white",
+                                  borderRight: (i + 1) % 2 === 0 ? 0 : `1px solid ${c.hair}`,
+                                  borderBottom: i < 2 ? `1px solid ${c.hair}` : 0 }}>
+              <h3 style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 700, letterSpacing: "-0.02em", margin: "0 0 10px" }}>{s.h}</h3>
+              <p style={{ fontSize: 15.5, color: c.ink2, lineHeight: 1.6, margin: 0 }}>{s.t}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Wrappers for the existing Russian pages (kept Russian, headers hidden)
+function WrapRu({ Comp }) {
+  return (
+    <div className="page-frame">
+      <Comp bare={true} />
+    </div>
+  );
+}
+
+// === App ===
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [route, go] = useHashRoute();
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const lang = t.lang;
+  const setLang = (v) => setTweak("lang", v);
+  const dir = lang === "he" ? "rtl" : "ltr";
+
+  // Set html lang/dir
+  React.useEffect(() => {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = dir;
+    document.body.dir = dir;
+    document.body.lang = lang;
+  }, [lang, dir]);
+
+  // ESC closes mobile menu
+  React.useEffect(() => {
+    const fn = e => { if (e.key === "Escape") setMenuOpen(false); };
+    window.addEventListener("keydown", fn);
+    return () => window.removeEventListener("keydown", fn);
+  }, []);
+
+  const pageNode = (() => {
+    switch (route) {
+      case "home":            return <HomePage lang={lang} />;
+      case "about":           return <AboutPage lang={lang} />;
+      case "leadership":      return <WrapRu Comp={PageLeader} />;
+      case "positions":       return <PositionsListPage lang={lang} />;
+      case "position-detail": return <WrapRu Comp={PagePosition} />;
+      case "news":            return <WrapRu Comp={PageNews} />;
+      case "primaries":       return <WrapRu Comp={PageNews} />;
+      case "join":            return <WrapRu Comp={PageJoin} />;
+      case "branches":        return <WrapRu Comp={PageBranches} />;
+      case "contact":         return <WrapRu Comp={PageContact} />;
+      default:                return <HomePage lang={lang} />;
+    }
+  })();
+
+  return (
+    <div className="site">
+      <SiteHeader
+        lang={lang} setLang={setLang}
+        route={route} onNav={go}
+        onBurger={() => setMenuOpen(true)} />
+      <MobileMenu
+        open={menuOpen}
+        lang={lang} setLang={setLang}
+        route={route} onNav={go}
+        onClose={() => setMenuOpen(false)} />
+
+      <main className="site-main" id="main">
+        {pageNode}
+      </main>
+
+      <SiteFooter lang={lang} onNav={go} />
+
+      {/* Sticky mobile CTA */}
+      <div className="mobile-cta">
+        <button className="secondary" onClick={() => go("join")}>{CONTENT[lang].cta.support}</button>
+        <button className="primary" onClick={() => go("join")}>{CONTENT[lang].cta.join}</button>
+      </div>
+
+      {/* Tweaks panel for language only */}
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Локаль" />
+        <TweakRadio
+          label="Язык"
+          value={lang}
+          options={["he", "en", "ru"]}
+          onChange={(v) => setLang(v)} />
+        <div style={{ padding: "8px 12px 0", fontSize: 11, color: "#6E7A8E", lineHeight: 1.5 }}>
+          В Tailwind + Next.js версии — это `/he`, `/en`, `/ru` маршруты с автоопределением по Accept-Language.
+        </div>
+      </TweaksPanel>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# wget archive of the original site (kept locally as content reference, not pushed)
+www.likud.org.il/
+wget.log
+wget2.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Node / build (in case we add it later)
+node_modules/
+dist/
+build/
+.next/
+.cache/

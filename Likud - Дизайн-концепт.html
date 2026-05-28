@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="ru" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ликуд — Дизайн-концепт нового сайта</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&family=Heebo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* Brand */
+    --likud-blue: #0038B8;
+    --likud-blue-deep: #002A6E;
+    --likud-blue-ink: #001541;
+    --likud-blue-soft: #E6EDF8;
+    --likud-blue-mist: #F3F6FB;
+    --likud-red: #C8102E;
+    --likud-red-deep: #8E0B20;
+
+    /* Neutrals */
+    --ink: #0A1426;
+    --ink-2: #38465C;
+    --ink-3: #6E7A8E;
+    --ink-4: #9AA3B5;
+    --paper: #FFFFFF;
+    --paper-2: #FAFBFD;
+    --paper-3: #F1F4F9;
+    --hairline: #E3E7EE;
+    --hairline-strong: #C8CFDC;
+
+    /* System */
+    --ok: #1F8A5B;
+    --warn: #C8102E;
+
+    /* Type */
+    --font-display: "Rubik", "Heebo", system-ui, sans-serif;
+    --font-body: "Rubik", "Heebo", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+    /* Layout */
+    --container: 1280px;
+    --pad: clamp(20px, 4vw, 48px);
+    --doc-pad: clamp(24px, 5vw, 96px);
+
+    /* Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+    --radius-pill: 999px;
+
+    /* Shadow */
+    --shadow-1: 0 1px 2px rgba(10,20,38,0.04), 0 4px 12px rgba(10,20,38,0.04);
+    --shadow-2: 0 2px 4px rgba(10,20,38,0.04), 0 12px 32px rgba(10,20,38,0.08);
+    --shadow-3: 0 16px 48px -12px rgba(0,42,110,0.22);
+
+    /* Motion */
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-fast: 180ms;
+    --dur: 260ms;
+    --dur-slow: 460ms;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    line-height: 1.55;
+    font-feature-settings: "ss01", "kern";
+  }
+  a { color: inherit; }
+  ::selection { background: var(--likud-blue); color: white; }
+
+  /* Doc shell */
+  .doc {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    min-height: 100vh;
+  }
+  .doc-aside {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid var(--hairline);
+    background: var(--paper-2);
+    padding: 28px 24px 40px;
+  }
+  .doc-main {
+    min-width: 0;
+    background: var(--paper);
+  }
+  @media (max-width: 900px) {
+    .doc { grid-template-columns: 1fr; }
+    .doc-aside { position: static; height: auto; max-height: none; border-right: 0; border-bottom: 1px solid var(--hairline); }
+  }
+
+  /* Aside */
+  .brandmark {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 28px;
+  }
+  .brandmark-logo {
+    width: 40px; height: 40px;
+    background: var(--likud-blue);
+    border-radius: 8px;
+    display: grid; place-items: center;
+    color: white;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+  }
+  .brandmark-text {
+    display: flex; flex-direction: column;
+  }
+  .brandmark-name { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+  .brandmark-kicker {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    margin-top: 2px;
+  }
+
+  .doc-nav-kicker {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-3);
+    margin: 28px 0 10px;
+  }
+  .doc-nav ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: nav;
+  }
+  .doc-nav li { counter-increment: nav; }
+  .doc-nav a {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 10px;
+    padding: 9px 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--ink-2);
+    font-size: 13.5px;
+    line-height: 1.35;
+    transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+  .doc-nav a::before {
+    content: counter(nav, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-4);
+    align-self: center;
+    text-align: right;
+  }
+  .doc-nav a:hover { background: var(--likud-blue-mist); color: var(--ink); }
+  .doc-nav a.is-active { background: var(--likud-blue-soft); color: var(--likud-blue-deep); }
+  .doc-nav a.is-active::before { color: var(--likud-blue); font-weight: 600; }
+
+  .doc-meta {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline);
+    font-size: 12px;
+    color: var(--ink-3);
+    line-height: 1.55;
+  }
+  .doc-meta b { color: var(--ink); font-weight: 600; }
+
+  /* Main sections */
+  section.doc-section {
+    padding: 96px var(--doc-pad);
+    border-bottom: 1px solid var(--hairline);
+    max-width: 1280px;
+  }
+  section.doc-section.bleed { max-width: none; padding-left: var(--doc-pad); padding-right: var(--doc-pad); }
+  section.doc-section.tint { background: var(--paper-2); }
+  section.doc-section.tint-blue { background: var(--likud-blue-mist); }
+  section.doc-section.ink {
+    background: var(--likud-blue-ink);
+    color: white;
+  }
+  section.doc-section.ink h1, section.doc-section.ink h2, section.doc-section.ink h3 { color: white; }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 48px;
+    max-width: 880px;
+  }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--likud-blue);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  section.doc-section.ink .section-num { color: #6E9DFF; }
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(32px, 4.4vw, 56px);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .section-lede {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    margin-top: 12px;
+    max-width: 720px;
+    text-wrap: pretty;
+  }
+  section.doc-section.ink .section-lede { color: rgba(255,255,255,0.7); }
+
+  /* Prose */
+  .prose p { margin: 0 0 16px; max-width: 68ch; color: var(--ink-2); }
+  .prose strong { color: var(--ink); font-weight: 600; }
+  .prose h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    margin: 40px 0 12px;
+    letter-spacing: -0.01em;
+  }
+  .prose h4 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    margin: 32px 0 10px;
+  }
+  .prose ul { margin: 0 0 16px; padding-left: 20px; color: var(--ink-2); }
+  .prose ul li { margin: 4px 0; }
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--paper-3);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--likud-blue-deep);
+  }
+
+  /* Frame helpers */
+  .surface {
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .surface-pad { padding: 24px; }
+  .surface-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--hairline);
+    background: var(--paper-2);
+    font-size: 12.5px;
+    color: var(--ink-3);
+  }
+  .surface-head .head-title { color: var(--ink); font-weight: 600; }
+  .surface-head .head-meta { font-family: var(--font-mono); font-size: 11px; }
+
+  .tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--likud-blue-soft);
+    color: var(--likud-blue-deep);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .tag.tag-red { background: #FCE6EA; color: var(--likud-red-deep); }
+  .tag.tag-ghost { background: transparent; border: 1px solid var(--hairline); color: var(--ink-3); }
+
+  /* ASCII / mono blocks */
+  pre.mono {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.55;
+    background: var(--paper-2);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    overflow-x: auto;
+    color: var(--ink);
+    margin: 0;
+  }
+  pre.code {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+    background: var(--likud-blue-ink);
+    color: #DDE5F5;
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+    overflow-x: auto;
+    margin: 0;
+  }
+  pre.code .k { color: #FF9DC0; }
+  pre.code .a { color: #9BD8FF; }
+  pre.code .s { color: #C8E6A5; }
+  pre.code .c { color: #6E7A8E; font-style: italic; }
+  pre.code .t { color: #FFD27A; }
+
+  /* Tables */
+  table.spec {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  table.spec th, table.spec td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--hairline);
+    vertical-align: top;
+  }
+  table.spec th {
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    background: var(--paper-2);
+  }
+  table.spec td.mono, table.spec th.mono { font-family: var(--font-mono); font-size: 12.5px; }
+  table.spec tbody tr:hover { background: var(--paper-2); }
+
+  /* Cover */
+  .cover {
+    padding: clamp(80px, 12vw, 160px) var(--doc-pad) clamp(60px, 10vw, 120px);
+    background:
+      radial-gradient(ellipse at 0% 100%, rgba(0,56,184,0.05), transparent 55%),
+      radial-gradient(ellipse at 100% 0%, rgba(200,16,46,0.04), transparent 55%),
+      var(--paper);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .cover-kicker {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-3);
+    padding: 6px 12px 6px 6px;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-pill);
+    background: var(--paper);
+  }
+  .cover-kicker::before {
+    content: ""; width: 16px; height: 16px;
+    background: var(--likud-blue);
+    border-radius: 4px;
+    display: inline-block;
+  }
+  .cover-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(44px, 7vw, 96px);
+    line-height: 0.96;
+    letter-spacing: -0.035em;
+    margin: 24px 0 16px;
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+  .cover-title em { font-style: normal; color: var(--likud-blue); }
+  .cover-sub {
+    font-size: clamp(17px, 1.6vw, 21px);
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 64ch;
+    margin-bottom: 40px;
+    text-wrap: pretty;
+  }
+  .cover-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 24px;
+    max-width: 880px;
+    padding-top: 32px;
+    border-top: 1px solid var(--hairline);
+  }
+  .cover-meta dt {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    margin-bottom: 6px;
+  }
+  .cover-meta dd {
+    margin: 0;
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* Tweaks panel — minimal style for this doc */
+  .tweaks-host {
+    position: fixed;
+    top: 16px; right: 16px;
+    z-index: 9999;
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="shared.jsx"></script>
+<script type="text/babel" src="sections-doc.jsx"></script>
+<script type="text/babel" src="sections-home.jsx"></script>
+<script type="text/babel" src="sections-pages.jsx"></script>
+<script type="text/babel" src="sections-system.jsx"></script>
+<script type="text/babel">
+// app.jsx inlined (external load was failing)
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "lang": "he"
+}/*EDITMODE-END*/;
+
+const SECTIONS = [
+  { id: "approach",   t: "Подход" },
+  { id: "ia",         t: "Карта сайта · 3 языка" },
+  { id: "wireframes", t: "Wireframes главной" },
+  { id: "home",       t: "Hi-fi прототип главной" },
+  { id: "pages",      t: "Остальные страницы" },
+  { id: "system",     t: "Дизайн-система" },
+  { id: "rtl",        t: "RTL-гайд" },
+  { id: "tech",       t: "Технические рекомендации" },
+  { id: "hero-code",  t: "Hero · код" },
+  { id: "references", t: "Референсы" },
+];
+
+function Cover() {
+  return (
+    <section className="cover" id="cover">
+      <span className="cover-kicker">Design concept · v0.1 · 2026</span>
+      <h1 className="cover-title">Ликуд — <em>новый сайт</em></h1>
+      <p className="cover-sub">
+        Дизайн-концепция и UX-структура нового официального сайта партии Ликуд. Три языка, иврит — primary (RTL), доверительная партийная подача без startup-эстетики. Документ описывает подход, информационную архитектуру, дизайн-систему и содержит рабочий hi-fi прототип главной страницы во всех трёх локалях.
+      </p>
+      <dl className="cover-meta">
+        <div><dt>Стек</dt><dd>Next.js 14 · TypeScript · Tailwind · next-intl</dd></div>
+        <div><dt>Языки</dt><dd>עברית (primary) · English · Русский</dd></div>
+        <div><dt>Документ</dt><dd>10 разделов · 1 hi-fi · 6 шаблонов</dd></div>
+        <div><dt>Доступность</dt><dd>WCAG 2.1 AA</dd></div>
+      </dl>
+    </section>
+  );
+}
+
+function DocNav({ active }) {
+  return (
+    <aside className="doc-aside">
+      <div className="brandmark">
+        <div className="brandmark-logo">L</div>
+        <div className="brandmark-text">
+          <span className="brandmark-name">Ликуд · Design Doc</span>
+          <span className="brandmark-kicker">v0.1 · 2026</span>
+        </div>
+      </div>
+
+      <div className="doc-nav-kicker">Содержание</div>
+      <nav className="doc-nav">
+        <ol>
+          {SECTIONS.map(s => (
+            <li key={s.id}>
+              <a href={"#" + s.id} className={active === s.id ? "is-active" : ""}>{s.t}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      <div className="doc-meta">
+        <b>Чтение по диагонали:</b> начните с раздела 04 (живой прототип главной) — он показывает, к чему ведут все предыдущие решения.
+      </div>
+    </aside>
+  );
+}
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [active, setActive] = React.useState("approach");
+
+  React.useEffect(() => {
+    const els = SECTIONS.map(s => document.getElementById(s.id)).filter(Boolean);
+    if (!els.length) return;
+    const io = new IntersectionObserver((entries) => {
+      let best = null;
+      entries.forEach(e => {
+        if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) best = e;
+      });
+      if (best) setActive(best.target.id);
+    }, { rootMargin: "-30% 0% -55% 0%", threshold: [0, 0.2, 0.5, 1] });
+    els.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div className="doc">
+      <DocNav active={active} />
+      <main className="doc-main">
+        <Cover />
+        <SectionIntro />
+        <SectionIA />
+        <SectionWireframes />
+        <SectionHome globalLang={t.lang} setGlobalLang={(v) => setTweak("lang", v)} />
+        <SectionPages />
+        <SectionSystem />
+        <SectionRTL />
+        <SectionTech />
+        <SectionHeroCode />
+        <SectionReferences />
+
+        <TweaksPanel title="Tweaks">
+          <TweakSection label="Язык prototype" />
+          <TweakRadio
+            label="Активный язык"
+            value={t.lang}
+            options={["he", "en", "ru"]}
+            onChange={(v) => setTweak("lang", v)} />
+          <div style={{ padding: "8px 12px 0", fontSize: 11, color: "var(--ink-3)", lineHeight: 1.5 }}>
+            Меняет язык в режиме «Один — крупно» в разделе 04. В режиме «Три рядом» все три рендерятся одновременно.
+          </div>
+        </TweaksPanel>
+      </main>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
+</body>
+</html>
