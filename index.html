@@ -4,6 +4,12 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>הליכוד · Likud · Ликуд — официальный сайт партии</title>
+<meta name="description" content="Официальный сайт партии Ликуд — национально-либеральная партия Израиля. Новости, позиции, фракция в Кнессете, отделения по всей стране." />
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<link rel="apple-touch-icon" href="images/logo.svg" />
+<meta property="og:title" content="הליכוד · Likud · Ликуд — официальный сайт партии" />
+<meta property="og:description" content="Национально-либеральная партия Израиля. 1973–2026." />
+<meta property="og:image" content="images/event-rally.jpg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -353,17 +359,13 @@ function SiteHeader({ lang, setLang, route, onNav, onBurger }) {
         </div>
       </div>
       <div className="site-nav">
-        <a className="site-nav-brand" href="#/home">
-          <span className="site-nav-mark" aria-hidden="true">
-            <span style={{ fontFamily: 'var(--font-display)', display: 'inline-block', transform: 'translateY(-1px)' }}>הל</span>
-          </span>
-          <span>
-            <div className="site-nav-brand-name">{lang === "he" ? "הליכוד" : "LIKUD"}</div>
-            <div className="site-nav-brand-kicker">
-              {lang === "he" ? "מפלגת הליכוד הרשמית"
-                : lang === "en" ? "The Official Likud Party"
-                : "Официальный сайт партии Ликуд"}
-            </div>
+        <a className="site-nav-brand" href="#/home" aria-label="Likud — home">
+          <img
+            src={lang === "he" ? "images/logo-blue-he.svg" : lang === "en" ? "images/logo-blue-en.svg" : "images/logo-blue-ru.svg"}
+            alt={lang === "he" ? "הליכוד" : lang === "en" ? "Likud" : "Ликуд"}
+            style={{ height: 44, width: "auto", display: "block" }} />
+          <span style={{ display: "none" }}>
+            <span className="site-nav-brand-name">{lang === "he" ? "הליכוד" : "LIKUD"}</span>
           </span>
         </a>
         <nav className="site-nav-menu" aria-label="Main">
@@ -405,12 +407,12 @@ function SiteFooter({ lang, onNav }) {
       <div className="site-footer-inner">
         <div className="site-footer-grid">
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
-              <span className="site-nav-mark" aria-hidden="true">
-                <span style={{ fontFamily: 'var(--font-display)', display: 'inline-block', transform: 'translateY(-1px)' }}>הל</span>
-              </span>
-              <span style={{ fontWeight: 800, fontSize: 17, letterSpacing: "-0.02em" }}>{lang === "he" ? "הליכוד" : "LIKUD"}</span>
-            </div>
+            <a href="#/home" style={{ display: "inline-block", marginBottom: 18 }} aria-label="Likud — home">
+              <img
+                src={lang === "he" ? "images/logo.svg" : lang === "en" ? "images/logoEN.svg" : "images/logoRU.svg"}
+                alt={lang === "he" ? "הליכוד" : lang === "en" ? "Likud" : "Ликуд"}
+                style={{ height: 64, width: "auto", display: "block" }} />
+            </a>
             <p style={{ fontSize: 13, color: "rgba(255,255,255,0.68)", lineHeight: 1.6, margin: 0, maxWidth: 320 }}>
               {lang === "he" ? "כתובתנו: המלך ג׳ורג׳ 38, תל אביב · ת.ד. 56216, תל-אביב 6156101 · טלפון 03-6210666"
                 : lang === "en" ? "Party HQ · 38 King George St., Tel Aviv · P.O.B. 56216, Tel Aviv 6156101 · Tel +972-3-6210666"
@@ -470,12 +472,10 @@ function MobileMenu({ open, lang, route, onNav, onClose, setLang }) {
   return (
     <div className={"mobile-menu" + (open ? " is-open" : "")} dir={dir}>
       <div className="mobile-menu-top">
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span className="site-nav-mark" aria-hidden="true">
-            <span style={{ fontFamily: 'var(--font-display)', transform: 'translateY(-1px)' }}>הל</span>
-          </span>
-          <span style={{ fontWeight: 800, fontSize: 17 }}>{lang === "he" ? "הליכוד" : "LIKUD"}</span>
-        </div>
+        <img
+          src={lang === "he" ? "images/logo.svg" : lang === "en" ? "images/logoEN.svg" : "images/logoRU.svg"}
+          alt={lang === "he" ? "הליכוד" : lang === "en" ? "Likud" : "Ликуд"}
+          style={{ height: 36, width: "auto", display: "block" }} />
         <button onClick={onClose} aria-label="Close" style={{
           width: 40, height: 40, borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)",
           background: "transparent", color: "white", cursor: "pointer", fontSize: 22, lineHeight: 1,
