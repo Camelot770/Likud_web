@@ -299,8 +299,29 @@ function PageNews({ lang = "ru", bare = false }) {
   const c = PAGE_C;
   const t = CONTENT[lang];
   const L = NEWS_LABELS[lang];
-  const news = NEWS[lang];
+  const allNews = NEWS[lang];
   const dir = dirOf(lang);
+  // Stateful: filter type + search
+  const [filterIdx, setFilterIdx] = React.useState(0); // 0 = "All"
+  const [query, setQuery] = React.useState("");
+
+  // Each filter type after index 0 maps to the real news tag — Hebrew/EN/RU tags are
+  // already what's stored in NEWS[lang][i].tag in singular form. The display label
+  // (in L.types) is the plural — so we map by index: 1=Notice, 2=Beit Din, 3=Convention, 4=Elections.
+  const FILTER_TAGS_BY_LANG = {
+    he: [null, "הודעה", "בית הדין", "ועידה", "בחירות"],
+    en: [null, "Notice", "Beit Din", "Convention", "Elections"],
+    ru: [null, "Уведомление", "Бейт-Дин", "Съезд", "Выборы"],
+  };
+  const wantTag = FILTER_TAGS_BY_LANG[lang][filterIdx];
+  const q = query.trim().toLowerCase();
+  const news = allNews.filter(n =>
+    (!wantTag || n.tag === wantTag) &&
+    (!q || (n.title + " " + n.tag + " " + n.source).toLowerCase().includes(q))
+  );
+
+  const noMatches = lang === "he" ? "אין תוצאות" : lang === "en" ? "No results" : "Нет результатов";
+
   return (
     <div lang={lang} dir={dir} style={{ fontFamily: fontOf(lang), color: c.ink, background: c.paper, width: bare ? "100%" : 1280 }}>
       {!bare && <MiniHeader lang={lang} active="news" />}
@@ -314,25 +335,34 @@ function PageNews({ lang = "ru", bare = false }) {
         <div style={{ display: "flex", gap: 16, marginBottom: 24, paddingBottom: 20, borderBottom: `1px solid ${c.hair}`, flexWrap: "wrap", alignItems: "center" }}>
           <div style={{ display: "inline-flex", gap: 4, padding: 4, borderRadius: 999, background: c.paper2, border: `1px solid ${c.hair}` }}>
             {L.types.map((typ, i) => (
-              <span key={typ} style={{
+              <button key={typ} type="button" onClick={() => setFilterIdx(i)} style={{
                 padding: "8px 14px", fontSize: 13, fontWeight: 600, borderRadius: 999,
-                background: i === 0 ? c.blue : "transparent",
-                color: i === 0 ? "white" : c.ink2,
-              }}>{typ}</span>
+                background: i === filterIdx ? c.blue : "transparent",
+                color: i === filterIdx ? "white" : c.ink2,
+                border: 0, cursor: "pointer", fontFamily: "inherit",
+                transition: "background 180ms ease",
+              }}>{typ}</button>
             ))}
           </div>
           <div style={{ marginInlineStart: "auto", display: "flex", gap: 10, alignItems: "center" }}>
-            <input placeholder={L.searchPh} style={{
-              border: `1px solid ${c.hair}`, borderRadius: 999, padding: "10px 18px",
-              fontSize: 13.5, width: 260, fontFamily: "inherit", outline: 0,
-              textAlign: dir === "rtl" ? "right" : "left",
-            }} />
-            <span style={{ fontSize: 12, color: c.ink3 }}>{L.perMonth}</span>
+            <input
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder={L.searchPh}
+              style={{
+                border: `1px solid ${c.hair}`, borderRadius: 999, padding: "10px 18px",
+                fontSize: 13.5, width: 260, fontFamily: "inherit", outline: 0,
+                textAlign: dir === "rtl" ? "right" : "left",
+              }} />
+            <span style={{ fontSize: 12, color: c.ink3 }}>{news.length} / {allNews.length}</span>
           </div>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 280px", gap: 48, alignItems: "start" }}>
           <div>
+            {news.length === 0 && (
+              <div style={{ padding: "48px 0", textAlign: "center", color: c.ink3, fontSize: 15 }}>{noMatches}</div>
+            )}
             {news.map((n, i) => (
               <article key={i} style={{ display: "grid", gridTemplateColumns: "240px 1fr", gap: 24, padding: "28px 0", borderTop: i === 0 ? 0 : `1px solid ${c.hair}` }}>
                 <Plate label={n.tag} tone={i % 3 === 0 ? "deep" : i % 3 === 1 ? "soft" : "mist"} ratio="4/3" />
@@ -504,7 +534,7 @@ function PageLeader({ lang = "ru", bare = false }) {
               </div>
             ))}
           </div>
-          <button style={{ marginTop: 24, background: "transparent", color: c.blue, border: `1px solid ${c.blueSoft}`, borderRadius: 999, padding: "12px 24px", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{L.factionMore}</button>
+          <a href="https://main.knesset.gov.il/mk/Pages/MKsList.aspx" target="_blank" rel="noopener" style={{ marginTop: 24, background: "transparent", color: c.blue, border: `1px solid ${c.blueSoft}`, borderRadius: 999, padding: "12px 24px", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", textDecoration: "none", display: "inline-block" }}>{L.factionMore} ↗</a>
         </div>
       </section>
     </div>
@@ -767,7 +797,7 @@ const BRANCH_LABELS = {
     breadcrumbs: ["Региональные отделения"],
     searchPh: "Поиск по городу или округу…",
     allDistricts: "Все округа",
-    districts: ["Север", "Дан", "Шарон", "Центр", "Иерусалим", "Юг"],
+    districts: ["Северный", "Дан", "Шарон", "Центральный", "Иерусалим", "Южный"],
     showing: (n) => `Показано ${n} из 120+`,
     loadMore: "Загрузить ещё",
     hqTag: "Штаб партии",
@@ -780,6 +810,18 @@ function PageBranches({ lang = "ru", bare = false }) {
   const c = PAGE_C;
   const L = BRANCH_LABELS[lang];
   const dir = dirOf(lang);
+  const [query, setQuery] = React.useState("");
+  const [district, setDistrict] = React.useState("");
+  const q = query.trim().toLowerCase();
+  const rows = BRANCHES_DATA.filter(r => {
+    if (q) {
+      const hay = (r[lang][0] + " " + r[lang][1] + " " + r[lang][2]).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    if (district && !r[lang][1].includes(district)) return false;
+    return true;
+  });
+  const noMatches = lang === "he" ? "לא נמצאו סניפים" : lang === "en" ? "No branches match" : "Совпадений не найдено";
   return (
     <div lang={lang} dir={dir} style={{ fontFamily: fontOf(lang), color: c.ink, background: c.paper, width: bare ? "100%" : 1280 }}>
       {!bare && <MiniHeader lang={lang} active="branches" />}
@@ -792,29 +834,43 @@ function PageBranches({ lang = "ru", bare = false }) {
             <p style={{ fontSize: 18, color: c.ink2, margin: "0 0 28px", maxWidth: 600, lineHeight: 1.55 }}>{L.lede}</p>
 
             <div style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
-              <input placeholder={L.searchPh} style={{
-                flex: "1 1 220px", minWidth: 0,
-                border: `1px solid ${c.hair}`, borderRadius: 999,
-                padding: "12px 22px", fontSize: 14, fontFamily: "inherit", outline: 0,
-                textAlign: dir === "rtl" ? "right" : "left",
-              }} />
-              <select style={{
-                border: `1px solid ${c.hair}`, borderRadius: 999,
-                padding: "12px 18px", fontSize: 13.5, fontFamily: "inherit", background: c.paper,
-              }}>
-                <option>{L.allDistricts}</option>
-                {L.districts.map(d => <option key={d}>{d}</option>)}
+              <input
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                placeholder={L.searchPh}
+                style={{
+                  flex: "1 1 220px", minWidth: 0,
+                  border: `1px solid ${c.hair}`, borderRadius: 999,
+                  padding: "12px 22px", fontSize: 14, fontFamily: "inherit", outline: 0,
+                  textAlign: dir === "rtl" ? "right" : "left",
+                }} />
+              <select
+                value={district}
+                onChange={e => setDistrict(e.target.value)}
+                style={{
+                  border: `1px solid ${c.hair}`, borderRadius: 999,
+                  padding: "12px 18px", fontSize: 13.5, fontFamily: "inherit", background: c.paper, cursor: "pointer",
+                }}>
+                <option value="">{L.allDistricts}</option>
+                {L.districts.map(d => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>
 
             <div style={{ border: `1px solid ${c.hair}`, borderRadius: 14, overflow: "hidden" }}>
-              {BRANCHES_DATA.map((r, i) => (
-                <div key={i} style={{
-                  display: "grid", gridTemplateColumns: "minmax(160px, 1fr) minmax(120px, 0.8fr) minmax(200px, 1.4fr) 28px",
-                  gap: 18, padding: "16px 20px",
-                  borderTop: i === 0 ? 0 : `1px solid ${c.hair}`,
-                  alignItems: "center", background: c.paper,
-                }}>
+              {rows.length === 0 && (
+                <div style={{ padding: "32px 20px", textAlign: "center", color: c.ink3, fontSize: 14 }}>{noMatches}</div>
+              )}
+              {rows.map((r, i) => (
+                <a key={i} href="#/contact"
+                  style={{
+                    display: "grid", gridTemplateColumns: "minmax(160px, 1fr) minmax(120px, 0.8fr) minmax(200px, 1.4fr) 28px",
+                    gap: 18, padding: "16px 20px",
+                    borderTop: i === 0 ? 0 : `1px solid ${c.hair}`,
+                    alignItems: "center", background: c.paper,
+                    textDecoration: "none", color: "inherit", transition: "background 180ms ease",
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = c.blueMist}
+                  onMouseLeave={e => e.currentTarget.style.background = c.paper}>
                   <div>
                     <div style={{ fontSize: 15, fontWeight: 600 }}>{r[lang][0]}</div>
                     {(r.headquarters || r.district) && (
@@ -827,11 +883,11 @@ function PageBranches({ lang = "ru", bare = false }) {
                   <div style={{ fontSize: 13, color: c.ink3 }}>{r[lang][1]}</div>
                   <div style={{ fontSize: 13, color: c.ink2 }}>{r[lang][2]}</div>
                   <ArrowNext size={16} dir={dir} />
-                </div>
+                </a>
               ))}
             </div>
             <div style={{ marginTop: 16, fontSize: 13, color: c.ink3, textAlign: "center" }}>
-              {L.showing(BRANCHES_DATA.length)} · <span style={{ color: c.blue, fontWeight: 600, cursor: "pointer" }}>{L.loadMore}</span>
+              {L.showing(rows.length)}
             </div>
           </div>
 
