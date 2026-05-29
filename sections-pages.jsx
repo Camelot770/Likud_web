@@ -364,7 +364,16 @@ function PageNews({ lang = "ru", bare = false }) {
               <div style={{ padding: "48px 0", textAlign: "center", color: c.ink3, fontSize: 15 }}>{noMatches}</div>
             )}
             {news.map((n, i) => (
-              <article key={i} style={{ display: "grid", gridTemplateColumns: "240px 1fr", gap: 24, padding: "28px 0", borderTop: i === 0 ? 0 : `1px solid ${c.hair}` }}>
+              <a key={i} href={"#article-" + i} id={"article-" + i}
+                 style={{
+                   display: "grid", gridTemplateColumns: "240px 1fr", gap: 24, padding: "28px 16px",
+                   borderTop: i === 0 ? 0 : `1px solid ${c.hair}`,
+                   textDecoration: "none", color: "inherit",
+                   transition: "background 180ms ease",
+                   marginInline: -16, borderRadius: 12,
+                 }}
+                 onMouseEnter={e => e.currentTarget.style.background = c.paper2}
+                 onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
                 <Plate label={n.tag} tone={i % 3 === 0 ? "deep" : i % 3 === 1 ? "soft" : "mist"} ratio="4/3" />
                 <div>
                   <div style={{ display: "flex", gap: 14, fontSize: 12, color: c.ink3, marginBottom: 10, alignItems: "center", flexWrap: "wrap" }}>
@@ -378,7 +387,7 @@ function PageNews({ lang = "ru", bare = false }) {
                     {L.readMore} <ArrowNext size={14} dir={dir} />
                   </div>
                 </div>
-              </article>
+              </a>
             ))}
           </div>
 
@@ -387,7 +396,14 @@ function PageNews({ lang = "ru", bare = false }) {
               <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 0.12, color: c.ink3, marginBottom: 12 }}>{L.tagsTitle}</div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {L.tags.map(tg => (
-                  <span key={tg} style={{ padding: "6px 12px", borderRadius: 999, background: "white", border: `1px solid ${c.hair}`, fontSize: 12, color: c.ink2, fontWeight: 500 }}>{tg}</span>
+                  <button key={tg} type="button" onClick={() => { setQuery(tg); setFilterIdx(0); }}
+                    style={{
+                      padding: "6px 12px", borderRadius: 999,
+                      background: query.toLowerCase() === tg.toLowerCase() ? c.blue : "white",
+                      color: query.toLowerCase() === tg.toLowerCase() ? "white" : c.ink2,
+                      border: `1px solid ${c.hair}`, fontSize: 12, fontWeight: 500,
+                      fontFamily: "inherit", cursor: "pointer", transition: "background 180ms ease",
+                    }}>{tg}</button>
                 ))}
               </div>
             </div>

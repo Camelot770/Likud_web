@@ -300,10 +300,10 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
-<script type="text/babel" src="tweaks-panel.jsx"></script>
-<script type="text/babel" src="shared.jsx"></script>
-<script type="text/babel" src="sections-home.jsx"></script>
-<script type="text/babel" src="sections-pages.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx?v=4"></script>
+<script type="text/babel" src="shared.jsx?v=4"></script>
+<script type="text/babel" src="sections-home.jsx?v=4"></script>
+<script type="text/babel" src="sections-pages.jsx?v=4"></script>
 <script type="text/babel">
 // ===== Site app =====
 
@@ -320,6 +320,53 @@ const NAV_ROUTES = [
   { id: "branches",  keyN: "branches" },
   { id: "contact",   keyN: "contact" },
 ];
+
+// Localised "today" date that updates on lang change.
+function LocalisedDate({ lang }) {
+  const d = new Date();
+  const fmt = lang === "he" ? "he-IL" : lang === "en" ? "en-US" : "ru-RU";
+  const text = d.toLocaleDateString(fmt, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+  return <bdi>{text}</bdi>;
+}
+
+// Accessible font-size scaler — actually changes root font-size, persists in localStorage.
+function FontSizeControl({ lang }) {
+  const STEPS = [0.875, 1, 1.15];
+  const STORAGE_KEY = "likud_font_scale";
+  const [idx, setIdx] = React.useState(() => {
+    const stored = parseFloat(localStorage.getItem(STORAGE_KEY) || "");
+    const i = STEPS.indexOf(stored);
+    return i >= 0 ? i : 1;
+  });
+  React.useEffect(() => {
+    document.documentElement.style.fontSize = (16 * STEPS[idx]) + "px";
+    localStorage.setItem(STORAGE_KEY, STEPS[idx]);
+  }, [idx]);
+  const labels = {
+    he: { hint: "מצב נגישות", smaller: "טקסט קטן יותר", normal: "טקסט רגיל", larger: "טקסט גדול יותר" },
+    en: { hint: "Accessibility", smaller: "Smaller text", normal: "Normal text", larger: "Larger text" },
+    ru: { hint: "Доступность", smaller: "Меньше шрифт", normal: "Обычный шрифт", larger: "Крупнее шрифт" },
+  }[lang];
+  const btn = (label, target, glyph) => (
+    <button type="button" onClick={() => setIdx(target)} aria-label={label} title={label} style={{
+      background: idx === target ? "var(--likud-blue)" : "transparent",
+      color: idx === target ? "white" : "var(--ink-3)",
+      border: "1px solid " + (idx === target ? "var(--likud-blue)" : "var(--hairline)"),
+      borderRadius: 999, padding: "2px 8px", fontSize: 12, fontWeight: 600, cursor: "pointer",
+      fontFamily: "inherit", lineHeight: 1.3, minWidth: 24,
+    }}>{glyph}</button>
+  );
+  return (
+    <span style={{ display: "inline-flex", gap: 8, alignItems: "center" }}>
+      <span>{labels.hint}:</span>
+      <span style={{ display: "inline-flex", gap: 4 }}>
+        {btn(labels.smaller, 0, "A−")}
+        {btn(labels.normal, 1, "A")}
+        {btn(labels.larger, 2, "A+")}
+      </span>
+    </span>
+  );
+}
 
 function useHashRoute() {
   const [route, setRoute] = React.useState(() => {
@@ -346,15 +393,11 @@ function SiteHeader({ lang, setLang, route, onNav, onBurger }) {
     <header className="site-header" dir={dir}>
       <div className="site-topbar">
         <div className="site-topbar-inner">
-          <span>
-            {lang === "he" ? <bdi>חמישי, 28 במאי 2026 · י״ב סיון התשפ״ו</bdi>
-              : lang === "en" ? "Thursday, May 28, 2026"
-              : "Четверг, 28 мая 2026"}
-          </span>
+          <span><LocalisedDate lang={lang} /></span>
           <span style={{ display: "inline-flex", gap: 16, alignItems: "center" }}>
             <a href="#/primaries" style={{ cursor: "pointer" }}>{t.nav.primaries}</a>
             <span>·</span>
-            <span>{lang === "he" ? "מצב נגישות: A− A A+" : lang === "en" ? "Accessibility: A− A A+" : "Доступность: A− A A+"}</span>
+            <FontSizeControl lang={lang} />
           </span>
         </div>
       </div>
